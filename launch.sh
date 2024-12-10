@@ -2,7 +2,7 @@
 
 set -e
 
-export $(cat .env | xargs)
+export $(grep -vE '^\s*#' .env | grep -vE '^\s*$' | xargs)
 
 envsubst < servers.json.template > servers.json
 docker compose up -d
