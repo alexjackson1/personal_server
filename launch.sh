@@ -4,7 +4,6 @@ set -euo pipefail
 # Define variables
 ENV_FILE=".env"
 SERVERS_TEMPLATE_FILE="servers.json.template"
-SERVERS_OUTPUT_FILE="servers.json"
 DOCKER_COMPOSE_CMD="docker compose"
 PGADMIN_USER_ID=5050   # Hardcoded by the Docker image, can be overridden in .env
 PGADMIN_GROUP_ID=5050  # Hardcoded by the Docker image, can be overridden in .env
@@ -74,6 +73,7 @@ fi
 # Extract target directory
 TARGET_DIR=${AJ_NEXTCLOUD_DATA_DIR:-/mnt/aj_nextcloud}
 PGADMIN_DATA_DIR="${TARGET_DIR}/pgadmin_data"
+SERVERS_OUTPUT_FILE="${TARGET_DIR}/servers.json"
 echo_info "Data directory: ${TARGET_DIR}"
 
 # Create target directory

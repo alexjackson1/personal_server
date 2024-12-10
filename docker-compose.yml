@@ -37,7 +37,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
       - ${AJ_NEXTCLOUD_DATA_DIR}/pgadmin_data:/var/lib/pgadmin
-      - ./servers.json:/pgadmin4/servers.json
+      - ${AJ_NEXTCLOUD_DATA_DIR}/servers.json:/pgadmin4/servers.json
     ports:
       - "${PGADMIN_PORT}:80"
     networks:
