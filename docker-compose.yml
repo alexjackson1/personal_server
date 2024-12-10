@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:17
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - ajcloud_net
+
+  db_admin:
+    image: dpage/pgadmin4:latest
+    container_name: db_admin
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - db_admin_data:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT}:80"
+    networks:
+      - ajcloud_net
+
+  cloud:
+    image: nextcloud:30
+    container_name: cloud
+    restart: always
+    depends_on:
+      - db
+    environment:
+      NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
+      NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+    volumes:
+      - cloud_data:/var/www/html
+    ports:
+      - "${NEXTCLOUD_PORT}:80"
+    networks:
+      - ajcloud_net
+
+volumes:
+  db_data:
+  db_admin_data:
+  cloud_data:
+
+networks:
+  ajcloud_net:
