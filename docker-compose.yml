@@ -12,7 +12,7 @@ services:
     volumes:
       - /mnt/ajcloud/postgres_data:/var/lib/postgresql/data
     networks:
-      - aj_cloud_net
+      - ajnet_nextcloud
 
   redis:
     image: redis:latest
@@ -24,7 +24,7 @@ services:
     volumes:
       - /mnt/ajcloud/redis_data:/data
     networks:
-      - aj_cloud_net
+      - ajnet_nextcloud
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -41,7 +41,7 @@ services:
     ports:
       - "${PGADMIN_PORT}:80"
     networks:
-      - aj_cloud_net
+      - ajnet_nextcloud
 
   nextcloud:
     image: nextcloud:30
