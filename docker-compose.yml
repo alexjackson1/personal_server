@@ -1,63 +1,71 @@
 version: '3.9'
 
 services:
-  db:
+  postgres:
     image: postgres:17
-    container_name: db
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - /mnt/ajcloud/db_data:/var/lib/postgresql/data
+      - /mnt/ajcloud/postgres_data:/var/lib/postgresql/data
     networks:
-      - ajcloud_net
+      - aj_cloud_net
 
-  cache:
+  redis:
     image: redis:latest
     container_name: redis
     restart: always
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
-      - /mnt/ajcloud/cache_data:/data
+      - /mnt/ajcloud/redis_data:/data
     networks:
-      - ajcloud_net
+      - aj_cloud_net
 
-
-  db_admin:
+  pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: db_admin
+    container_name: pgadmin
     restart: always
     depends_on:
-      - db
+      - postgres
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - /mnt/ajcloud/db_admin_data:/var/lib/pgadmin
+      - /mnt/ajcloud/pgadmin_data:/var/lib/pgadmin
+      - ./servers.json:/pgadmin4/servers.json
     ports:
       - "${PGADMIN_PORT}:80"
     networks:
-      - ajcloud_net
+      - aj_cloud_net
 
-  cloud:
+  nextcloud:
     image: nextcloud:30
-    container_name: cloud
+    container_name: nextcloud
     restart: always
     depends_on:
-      - db
+      - postgres
+      - redis
     environment:
       NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
       NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+      POSTGRES_HOST: postgres:5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_HOST: redis
+      REDIS_HOST_PORT: 6379
+      REDIS_HOST_PASSWORD: ${REDIS_PASSWORD}
     volumes:
-      - /mnt/ajcloud/cloud_data:/var/www/html
+      - /mnt/ajcloud/nextcloud_data:/var/www/html
     ports:
       - "${NEXTCLOUD_PORT}:80"
     networks:
-      - ajcloud_net
+      - ajnet_nextcloud
 
 networks:
-  ajcloud_net:
+  ajnet_nextcloud:
