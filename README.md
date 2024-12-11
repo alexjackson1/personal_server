@@ -30,18 +30,21 @@ The `launch.sh` script and `docker-compose.yml` files rely on environment variab
 The `.env` file defines the settings for the Nextcloud deployment, including database credentials, server ports, and admin accounts. Below is a sample `.env` file:
 
 ```bash
-COMPOSE_PROJECT_NAME=aj_nextcloud
+COMPOSE_PROJECT_NAME=server                    # Docker Compose project name
+COMPOSE_PROJECT_DATA_DIR="/data/server"        # Path to store Nextcloud data
 
-AJ_NEXTCLOUD_DATA_DIR="/data/aj_nextcloud"     # Path to store Nextcloud data
 POSTGRES_USER="username"                       # PostgreSQL username
 POSTGRES_PASSWORD="password"                   # PostgreSQL password
 POSTGRES_DB="nextcloud"                        # PostgreSQL database name
+
 PGADMIN_DEFAULT_EMAIL="john.smith@example.com" # Default email for pgAdmin login
 PGADMIN_DEFAULT_PASSWORD="password"            # Default password for pgAdmin login
 PGADMIN_PORT=5050                              # Port for pgAdmin
+
 NEXTCLOUD_ADMIN_USER="admin"                   # Nextcloud admin username
 NEXTCLOUD_ADMIN_PASSWORD="password"            # Nextcloud admin password
 NEXTCLOUD_PORT=8080                            # Port for accessing Nextcloud
+
 REDIS_PORT=6379                                # Redis cache port
 REDIS_PASSWORD="password"                      # Redis cache password
 ```

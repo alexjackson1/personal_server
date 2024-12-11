@@ -71,13 +71,13 @@ fi
 
 echo_info "Using Docker Compose command: $DOCKER_COMPOSE_CMD"
 
-# Warn if AJ_NEXTCLOUD_DATA_DIR is not set
-if [ -z "${AJ_NEXTCLOUD_DATA_DIR:-}" ]; then
-    echo_info "AJ_NEXTCLOUD_DATA_DIR is not set. Falling back to default: /mnt/aj_nextcloud"
+# Warn if COMPOSE_PROJECT_DATA_DIR is not set
+if [ -z "${COMPOSE_PROJECT_DATA_DIR:-}" ]; then
+    echo_info "COMPOSE_PROJECT_DATA_DIR is not set. Falling back to default: /mnt/server"
 fi
 
 # Extract target directory
-TARGET_DIR=${AJ_NEXTCLOUD_DATA_DIR:-/mnt/aj_nextcloud}
+TARGET_DIR=${COMPOSE_PROJECT_DATA_DIR:-/mnt/server}
 PGADMIN_DATA_DIR="${TARGET_DIR}/pgadmin_data"
 SERVERS_OUTPUT_FILE="${TARGET_DIR}/servers.json"
 echo_info "Data directory: ${TARGET_DIR}"
