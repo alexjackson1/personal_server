@@ -48,6 +48,12 @@ if ! command -v envsubst &>/dev/null; then
     exit 1
 fi
 
+# Ensure sudo is installed
+if ! command -v sudo &>/dev/null; then
+    echo_error "sudo not found. Please install it."
+    exit 1
+fi
+
 # Check Docker availability
 if ! command -v docker &>/dev/null; then
     echo_error "Docker not found. Please install it."
@@ -97,8 +103,7 @@ if [ ! -d "$PGADMIN_DATA_DIR" ]; then
     echo_info "Created pgAdmin data directory: $PGADMIN_DATA_DIR"
 fi
 
-# Set ownership for pgAdmin data directory
-if ! chown -R "$PGADMIN_USER_ID:$PGADMIN_GROUP_ID" "$PGADMIN_DATA_DIR"; then
+if ! sudo chown -R "$PGADMIN_USER_ID:$PGADMIN_GROUP_ID" "$PGADMIN_DATA_DIR"; then
     echo_error "Failed to set ownership for $PGADMIN_DATA_DIR. Please check permissions."
     exit 1
 fi
