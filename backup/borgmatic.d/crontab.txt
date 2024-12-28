@@ -1,0 +1,1 @@
+* * 1 * * root borgmatic --verbosity 1 --progress --log /var/log/borgmatic.log --config /etc/borgmatic.d/config.yaml --prune --stats

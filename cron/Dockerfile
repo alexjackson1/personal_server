@@ -2,7 +2,7 @@ FROM debian:stable-slim
 
 # Install the necessary packages
 RUN apt-get update && apt-get install -y \
-  cron wget ca-certificates php-cli dumb-init \
+  cron wget ca-certificates php-cli dumb-init procps \
   && rm -rf /var/lib/apt/lists/*
 
 # Copy the crontab file to the cron.d directory
